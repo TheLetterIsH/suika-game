@@ -556,7 +556,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cecc9a4f8143d0d4c85c8927e60e3fb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animalPrefab: {fileID: 2518371304602915430, guid: acb550d19dc87e045974da7f09c48bbd, type: 3}
+  animalPrefabs:
+  - {fileID: 5574793704224607600, guid: acb550d19dc87e045974da7f09c48bbd, type: 3}
+  - {fileID: 5574793704224607600, guid: 87167774c01b1154096320253355cc64, type: 3}
+  - {fileID: 5574793704224607600, guid: b25e10676d098564f9368ab969e27600, type: 3}
   animalDropLine: {fileID: 2102960183}
   animalSpawnPositionY: 3.5
   enableGizmos: 0

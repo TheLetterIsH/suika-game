@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +5,7 @@ using UnityEngine;
 public class AnimalManager : MonoBehaviour
 {
     [Header("Elements")]
-    [SerializeField] private Animal animalPrefab;
+    [SerializeField] private Animal[] animalPrefabs;
     [SerializeField] private LineRenderer animalDropLine;
     private Animal currentAnimal;
 
@@ -89,7 +88,7 @@ public class AnimalManager : MonoBehaviour
     {
         Vector2 spawnPosition = GetSpawnWorldPosition();
 
-        currentAnimal = Instantiate(animalPrefab, spawnPosition, Quaternion.identity);
+        currentAnimal = Instantiate(animalPrefabs[Random.Range(0, animalPrefabs.Length)], spawnPosition, Quaternion.identity);
     }
 
     private Vector2 GetClickedWorldPosition()
@@ -122,7 +121,7 @@ public class AnimalManager : MonoBehaviour
 
     private void StartInputBufferTimer()
     {
-        Invoke("StopInputBufferTimer", 1);
+        Invoke("StopInputBufferTimer", 0.5f);
     }
 
     private void StopInputBufferTimer()
