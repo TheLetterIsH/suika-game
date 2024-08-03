@@ -5,21 +5,31 @@ using UnityEngine;
 public class AnimalManager : MonoBehaviour
 {
     [Header("Elements")]
+    [SerializeField] private Transform animalContainer;
+    [SerializeField] private Animal[] spawnableAnimalPrefabs;
     [SerializeField] private Animal[] animalPrefabs;
     [SerializeField] private LineRenderer animalDropLine;
     private Animal currentAnimal;
+    private int nextAnimalIndex;
 
     [Header("Settings")]
     [SerializeField] private float animalSpawnPositionY;
+    [SerializeField] private float inputBufferDelay;
     private bool canHandlePlayerInput;
     private bool isControllingCurrentAnimal;
 
     [Header("Debug")]
     [SerializeField] private bool enableGizmos;
 
+    private void Awake()
+    {
+        MergeManager.onAnimalsMerged += AnimalsMergedCallback;
+    }
+
     private void Start()
     {
         DisableAnimalDropLine();
+        SetNextAnimalIndex();
 
         canHandlePlayerInput = true;
     }
@@ -76,7 +86,10 @@ public class AnimalManager : MonoBehaviour
     {
         DisableAnimalDropLine();
 
-        currentAnimal.EnablePhysics();
+        if (currentAnimal != null)
+        {
+            currentAnimal.EnablePhysics();
+        }
 
         canHandlePlayerInput = false;
         StartInputBufferTimer();
@@ -88,7 +101,26 @@ public class AnimalManager : MonoBehaviour
     {
         Vector2 spawnPosition = GetSpawnWorldPosition();
 
-        currentAnimal = Instantiate(animalPrefabs[Random.Range(0, animalPrefabs.Length)], spawnPosition, Quaternion.identity);
+        Animal animalPrefab = spawnableAnimalPrefabs[nextAnimalIndex];
+
+        currentAnimal = Instantiate(
+            animalPrefab,
+            spawnPosition,
+            Quaternion.identity,
+            animalContainer
+        );
+
+        SetNextAnimalIndex();
+    }
+
+    private void SetNextAnimalIndex()
+    {
+        nextAnimalIndex = Random.Range(0, spawnableAnimalPrefabs.Length);
+    }
+
+    public string GetNextAnimalName()
+    {
+        return spawnableAnimalPrefabs[nextAnimalIndex].name;
     }
 
     private Vector2 GetClickedWorldPosition()
@@ -121,12 +153,36 @@ public class AnimalManager : MonoBehaviour
 
     private void StartInputBufferTimer()
     {
-        Invoke("StopInputBufferTimer", 0.5f);
+        Invoke("StopInputBufferTimer", inputBufferDelay);
     }
 
     private void StopInputBufferTimer()
     {
         canHandlePlayerInput = true;
+    }
+
+    private void AnimalsMergedCallback(AnimalType mergedAnimalType, Vector2 mergedAnimalSpawnPosition)
+    {
+        for (int i = 0; i < animalPrefabs.Length; i++)
+        {
+            if (animalPrefabs[i].GetAnimalType() == mergedAnimalType)
+            {
+                SpawnMergedAnimal(animalPrefabs[i], mergedAnimalSpawnPosition);
+                break;
+            }
+        }
+    }
+
+    private void SpawnMergedAnimal(Animal mergedAnimal,  Vector2 mergedAnimalSpawnPosition)
+    {
+        Animal mergedAnimalInstance = Instantiate(
+            mergedAnimal, 
+            mergedAnimalSpawnPosition, 
+            Quaternion.identity, 
+            animalContainer
+        );
+
+        mergedAnimalInstance.EnablePhysics();
     }
 
 #if UNITY_EDITOR
