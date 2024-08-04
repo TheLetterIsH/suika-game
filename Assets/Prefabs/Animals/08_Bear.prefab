@@ -110,6 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66328e70c3fd57646bf4a9a54f75f594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 8551404851242228037}
   animalType: 8
 --- !u!95 &6048712675951421781
 Animator:

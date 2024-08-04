@@ -5,8 +5,12 @@ using UnityEngine;
 
 public class Animal : MonoBehaviour
 {
+    [Header("Elements")]
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
     [Header("Data")]
     [SerializeField] private AnimalType animalType;
+    private bool hasCollided;
 
     [Header("Actions")]
     public static Action<Animal, Animal> onCollisionWithAnimal;
@@ -24,6 +28,8 @@ public class Animal : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        hasCollided = true;
+
         if (collision.collider.TryGetComponent(out Animal otherAnimal))
         {
             if (otherAnimal.GetAnimalType() != animalType)
@@ -38,5 +44,20 @@ public class Animal : MonoBehaviour
     public AnimalType GetAnimalType()
     {
         return animalType;
+    }
+
+    public Sprite GetSprite()
+    {
+        return spriteRenderer.sprite;
+    }
+
+    public Color GetColor()
+    {
+        return spriteRenderer.color;
+    }
+
+    public bool HasCollided()
+    {
+        return hasCollided;
     }
 }

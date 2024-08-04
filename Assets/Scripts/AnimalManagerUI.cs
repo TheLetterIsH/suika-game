@@ -1,22 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 [RequireComponent(typeof(AnimalManager))]
 public class AnimalManagerUI : MonoBehaviour
 {
     [Header("Elements")]
+    [SerializeField] private Image nextAnimalImage;
     [SerializeField] private TextMeshProUGUI nextAnimalText;
     private AnimalManager animalManager;
+
+    private void Awake()
+    {
+        AnimalManager.onNextAnimalIndexSet += UpdateNextAnimalImage;
+    }
 
     private void Start()
     {
         animalManager = GetComponent<AnimalManager>();
     }
 
-    private void Update()
+    private void UpdateNextAnimalImage()
     {
-        nextAnimalText.text = animalManager.GetNextAnimalName();
+        if (animalManager == null)
+        {
+            animalManager = GetComponent<AnimalManager>();
+        }
+
+        nextAnimalImage.sprite = animalManager.GetNextAnimalSprite();
+        nextAnimalImage.color = animalManager.GetNextAnimalColor();
     }
 }

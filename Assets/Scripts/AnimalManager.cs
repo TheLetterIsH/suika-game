@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+using Random = UnityEngine.Random;
 
 public class AnimalManager : MonoBehaviour
 {
@@ -20,6 +23,9 @@ public class AnimalManager : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] private bool enableGizmos;
+
+    [Header("Actions")]
+    public static Action onNextAnimalIndexSet;
 
     private void Awake()
     {
@@ -116,11 +122,23 @@ public class AnimalManager : MonoBehaviour
     private void SetNextAnimalIndex()
     {
         nextAnimalIndex = Random.Range(0, spawnableAnimalPrefabs.Length);
+
+        onNextAnimalIndexSet?.Invoke();
     }
 
     public string GetNextAnimalName()
     {
         return spawnableAnimalPrefabs[nextAnimalIndex].name;
+    }
+
+    public Sprite GetNextAnimalSprite()
+    {
+        return spawnableAnimalPrefabs[nextAnimalIndex].GetSprite();
+    }
+
+    public Color GetNextAnimalColor()
+    {
+        return spawnableAnimalPrefabs[nextAnimalIndex].GetColor();
     }
 
     private Vector2 GetClickedWorldPosition()
