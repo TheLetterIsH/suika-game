@@ -1,2 +1,3 @@
 # Suika Game
- A Suika-like made in Unity!
+
+A Suika Game clone made in Unity!
