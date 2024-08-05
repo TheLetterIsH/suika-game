@@ -1,2 +1,2 @@
-# Super Animal Merge
- A Suika-like but with animals!
+# Suika Game
+ A Suika-like made in Unity!
