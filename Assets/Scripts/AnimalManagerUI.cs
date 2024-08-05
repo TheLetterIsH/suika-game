@@ -9,7 +9,6 @@ public class AnimalManagerUI : MonoBehaviour
 {
     [Header("Elements")]
     [SerializeField] private Image nextAnimalImage;
-    [SerializeField] private TextMeshProUGUI nextAnimalText;
     private AnimalManager animalManager;
 
     private void Awake()
